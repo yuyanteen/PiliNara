@@ -22,7 +22,7 @@ abstract final class LoginHttp {
     'buvid': buvid,
     'env': 'prod',
     'app-key': 'android_hd',
-    'user-agent': Constants.userAgent,
+    'user-agent': Constants.userAgentHD,
     'x-bili-trace-id': Constants.traceId,
     'x-bili-aurora-eid': '',
     'x-bili-aurora-zone': '',
@@ -39,7 +39,11 @@ abstract final class LoginHttp {
       'platform': 'android',
       'mobi_app': 'android_hd',
     };
-    AppSign.appSign(params);
+    AppSign.appSign(
+      params,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().post(Api.getTVCode, queryParameters: params);
 
     if (res.data['code'] == 0) {
@@ -59,7 +63,11 @@ abstract final class LoginHttp {
       'auth_code': authCode,
       'local_id': '0',
     };
-    AppSign.appSign(params);
+    AppSign.appSign(
+      params,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().post(Api.qrcodePoll, queryParameters: params);
     return {
       'status': res.data['code'] == 0,
@@ -122,11 +130,15 @@ abstract final class LoginHttp {
       'platform': 'android',
       'recaptcha_token': ?recaptchaToken,
       's_locale': 'zh_CN',
-      'statistics': Constants.statistics,
+      'statistics': Constants.statisticsHD,
       'tel': tel,
       'ts': (timestamp ~/ 1000).toString(),
     };
-    AppSign.appSign(data);
+    AppSign.appSign(
+      data,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
 
     final res = await Request().post(
       Api.appSmsCode,
@@ -233,10 +245,14 @@ abstract final class LoginHttp {
       'platform': 'android',
       'recaptcha_token': ?recaptchaToken,
       's_locale': 'zh_CN',
-      'statistics': Constants.statistics,
+      'statistics': Constants.statisticsHD,
       'username': username,
     };
-    AppSign.appSign(data);
+    AppSign.appSign(
+      data,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().post(
       Api.loginByPwdApi,
       data: data,
@@ -299,10 +315,14 @@ abstract final class LoginHttp {
       'mobi_app': 'android_hd',
       'platform': 'android',
       's_locale': 'zh_CN',
-      'statistics': Constants.statistics,
+      'statistics': Constants.statisticsHD,
       'tel': tel,
     };
-    AppSign.appSign(data);
+    AppSign.appSign(
+      data,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().post(
       Api.logInByAppSms,
       data: data,
@@ -382,7 +402,11 @@ abstract final class LoginHttp {
       'gee_validate': ?geeValidate,
       'recaptcha_token': ?recaptchaToken,
     };
-    AppSign.appSign(data);
+    AppSign.appSign(
+      data,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().post(
       Api.safeCenterSmsCode,
       data: data,
@@ -424,7 +448,11 @@ abstract final class LoginHttp {
       'source': source,
       'captcha_key': captchaKey,
     };
-    AppSign.appSign(data);
+    AppSign.appSign(
+      data,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().post(
       Api.safeCenterSmsVerify,
       data: data,
@@ -470,7 +498,11 @@ abstract final class LoginHttp {
       // 's_locale': 'zh_CN',
       // 'statistics': Constants.statistics,
     };
-    AppSign.appSign(data);
+    AppSign.appSign(
+      data,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().post(
       Api.oauth2AccessToken,
       data: data,
@@ -516,9 +548,13 @@ abstract final class LoginHttp {
       'mobi_app': 'android_hd',
       'platform': 'android',
       'access_key': account.accessKey,
-      'statistics': Constants.statistics,
+      'statistics': Constants.statisticsHD,
     };
-    AppSign.appSign(params);
+    AppSign.appSign(
+      params,
+      appkey: Constants.appKeyHD,
+      appsec: Constants.appSecHD,
+    );
     final res = await Request().get(
       Api.loginDevices,
       queryParameters: params,

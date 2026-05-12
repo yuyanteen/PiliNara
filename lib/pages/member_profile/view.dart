@@ -70,10 +70,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<void> _getInfo() async {
     Map<String, String> data = {
-      'build': '2001100',
+      'build': '8430300',
       'c_locale': 'zh_CN',
       'channel': 'master',
-      'mobi_app': 'android_hd',
+      'mobi_app': 'android',
       'platform': 'android',
       's_locale': 'zh_CN',
       'statistics': Constants.statistics,
@@ -354,10 +354,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
     final data = <String, String>{
       'access_key': accessKey,
-      'build': '2001100',
+      'build': '8430300',
       'c_locale': 'zh_CN',
       'channel': 'master',
-      'mobi_app': 'android_hd',
+      'mobi_app': 'android',
       'platform': 'android',
       's_locale': 'zh_CN',
       'statistics': Constants.statistics,

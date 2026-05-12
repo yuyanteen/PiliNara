@@ -10,10 +10,10 @@ import 'package:PiliPlus/utils/login_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 
 abstract final class GrpcHeaders {
-  static const _build = 2001100;
-  static const _versionName = '2.0.1';
+  static const _build = 8430300;
+  static const _versionName = '8.43.0';
   static const _biliChannel = 'master';
-  static const _mobiApp = 'android_hd';
+  static const _mobiApp = 'android';
   static const _device = 'android';
 
   static String get _buvid => LoginUtils.buvid;
@@ -32,7 +32,7 @@ abstract final class GrpcHeaders {
     // 'te': 'trailers', // dio not supported
     'x-bili-device-bin': base64Encode(
       Device(
-        appId: 5,
+        appId: 1,
         build: _build,
         buvid: _buvid,
         mobiApp: _mobiApp,
