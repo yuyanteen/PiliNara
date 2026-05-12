@@ -15,15 +15,23 @@ abstract final class GrpcHeaders {
   static const _biliChannel = 'master';
   static const _mobiApp = 'android';
   static const _device = 'android';
+  static const _brand = 'Redmi';
+  static const _model = '23013RK75C';
+  static const _osver = '16';
+  static const _fp =
+      'b62983f45c4d642dcc786fc02748a210202411020151005bed865a8569fdbf9f';
+  static const _userAgent =
+      'Dalvik/2.1.0 (Linux; U; Android $_osver; $_model Build/BP2A.250605.031.A3) '
+      '$_versionName os/android model/$_model mobi_app/$_mobiApp '
+      'build/$_build channel/master innerVer/$_build osVer/$_osver network/2';
 
   static String get _buvid => LoginUtils.buvid;
   static String get _traceId => Constants.traceId;
-  static String get _sessionId => Utils.generateRandomString(8);
 
   static final Map<String, String> _base = {
     'grpc-encoding': 'gzip',
     'gzip-accept-encoding': 'gzip,identity',
-    'user-agent': Constants.userAgent,
+    'user-agent': _userAgent,
     'x-bili-gaia-vtoken': '',
     'x-bili-aurora-zone': '',
     'x-bili-trace-id': _traceId,
@@ -38,10 +46,13 @@ abstract final class GrpcHeaders {
         mobiApp: _mobiApp,
         platform: _device,
         channel: _biliChannel,
-        brand: _device,
-        model: _device,
-        osver: '15',
+        brand: _brand,
+        model: _model,
+        osver: _osver,
+        fpLocal: _fp,
+        fpRemote: _fp,
         versionName: _versionName,
+        fp: _fp,
       ).writeToBuffer(),
     ),
     'x-bili-network-bin': base64Encode(
@@ -59,16 +70,17 @@ abstract final class GrpcHeaders {
 
   static String get fawkes => base64Encode(
     FawkesReq(
-      appkey: _mobiApp,
+      appkey: 'android64',
       env: 'prod',
-      sessionId: _sessionId,
+      sessionId: Utils.generateRandomString(8),
     ).writeToBuffer(),
   );
 
-  static Map<String, String> newHeaders([String? accessKey]) {
+  static Map<String, String> newHeaders([String? accessKey, int? mid]) {
     return {
       ..._base,
       if (accessKey != null) 'authorization': 'identify_v1 $accessKey',
+      if (mid != null) 'x-bili-mid': '$mid',
       'x-bili-fawkes-req-bin': fawkes,
       'x-bili-metadata-bin': base64Encode(
         Metadata(
