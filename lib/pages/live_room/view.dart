@@ -160,6 +160,11 @@ class _LiveRoomPageState extends State<LiveRoomPage>
 
   @override
   Future<void> didPopNext() async {
+    logger.i(
+      '[LivePiP] didPopNext: _isEnteringPipMode=$_isEnteringPipMode, '
+      'isInPipMode=${LivePipOverlayService.isInPipMode}, '
+      'playerStatus=${plPlayerController.playerStatus.value}',
+    );
     addObserverMobile(this);
 
     // 如果返回当前页面时应用内小窗正在运行，且房间号匹配，说明是从正在小窗播放的页面返回
@@ -245,6 +250,12 @@ class _LiveRoomPageState extends State<LiveRoomPage>
 
   @override
   void didPushNext() {
+    logger.i(
+      '[LivePiP] didPushNext: _isEnteringPipMode=$_isEnteringPipMode, '
+      'isInPipMode=${LivePipOverlayService.isInPipMode}, '
+      'playerStatus=${plPlayerController.playerStatus.value}, '
+      'isFullScreen=$isFullScreen',
+    );
     removeObserverMobile(this);
     plPlayerController.removeStatusLister(playerListener);
 
@@ -282,6 +293,11 @@ class _LiveRoomPageState extends State<LiveRoomPage>
   void dispose() {
     final isInLivePip = LivePipOverlayService.isCurrentLiveRoom(
       _liveRoomController.roomId,
+    );
+    logger.i(
+      '[LivePiP] dispose: isInLivePip=$isInLivePip, '
+      '_isEnteringPipMode=$_isEnteringPipMode, '
+      'playerStatus=${plPlayerController.playerStatus.value}',
     );
     if (!isInLivePip && !_isEnteringPipMode) {
       videoPlayerServiceHandler?.onVideoDetailDispose(heroTag);
@@ -487,14 +503,26 @@ class _LiveRoomPageState extends State<LiveRoomPage>
         ],
       );
     }
+    final canPop = !isFullScreen && !plPlayerController.isDesktopPip;
+    logger.i(
+      '[LivePiP] videoPlayerPanel: canPop=$canPop, isPipMode=$isPipMode, '
+      'isFullScreen=$isFullScreen, isDesktopPip=${plPlayerController.isDesktopPip}, '
+      'playerStatus=${plPlayerController.playerStatus.value}',
+    );
     return popScope(
-      canPop: !isFullScreen && !plPlayerController.isDesktopPip,
+      canPop: canPop,
       onPopInvokedWithResult: _onPopInvokedWithResult,
       child: player,
     );
   }
 
   void _onPopInvokedWithResult(bool didPop, Object? result) {
+    logger.i(
+      '[LivePiP] _onPopInvokedWithResult: didPop=$didPop, '
+      '_isEnteringPipMode=$_isEnteringPipMode, '
+      'isInPipMode=${LivePipOverlayService.isInPipMode}, '
+      'playerStatus=${plPlayerController.playerStatus.value}',
+    );
     if (didPop) {
       _startLivePipIfNeeded();
     }
@@ -507,25 +535,32 @@ class _LiveRoomPageState extends State<LiveRoomPage>
 
   bool _shouldStartLivePip() {
     if (!Pref.enableInAppPip) {
+      logger.i('[LivePiP] Reject: in-app PiP disabled');
       return false;
     }
     if (LivePipOverlayService.isInPipMode) {
+      logger.i('[LivePiP] Reject: already in PiP mode');
       return false;
     }
     if (plPlayerController.isDesktopPip || plPlayerController.isPipMode) {
+      logger.i('[LivePiP] Reject: isDesktopPip=${plPlayerController.isDesktopPip}, isPipMode=${plPlayerController.isPipMode}');
       return false;
     }
     if (!plPlayerController.isLive) {
+      logger.i('[LivePiP] Reject: not live');
       return false;
     }
     // 如果即将进入听视频界面，不开启小窗(没啥用，直播间没有相关入口，但还是留着吧？)
     if (Get.currentRoute == '/audio') {
+      logger.i('[LivePiP] Reject: navigating to audio');
       return false;
     }
+    logger.i('[LivePiP] Allow PiP');
     return true;
   }
 
   void _startLivePipIfNeeded() {
+    logger.i('[LivePiP] _startLivePipIfNeeded called');
     if (!_shouldStartLivePip()) {
       return;
     }
