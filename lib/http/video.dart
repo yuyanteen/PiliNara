@@ -90,53 +90,55 @@ abstract final class VideoHttp {
     }
   }
 
+  // 粉版 appKey/appSec，用于推荐接口签名
+  static const _rcmdAppKey = '1d8b6e7d45233436';
+  static const _rcmdAppSec = '560c52ccd288fed045859ed18bffd973';
+
   // 添加额外的loginState变量模拟未登录状态
   static Future<LoadingState<List<RcmdVideoItemAppModel>>> rcmdVideoListApp({
     required int freshIdx,
   }) async {
     final params = {
-      'build': 2001100,
+      'build': 8430300,
       'c_locale': 'zh_CN',
       'channel': 'master',
       'column': 4,
-      'device': 'pad',
-      'device_name': 'android',
       'device_type': 0,
       'disable_rcmd': 0,
       'flush': 5,
-      'fnval': 976,
+      'fnval': 17360,
       'fnver': 0,
-      'force_host': 2, //使用https
+      'force_host': 0,
       'fourk': 1,
       'guidance': 0,
       'https_url_req': 0,
-      'idx': freshIdx,
-      'mobi_app': 'android_hd',
+      'idx': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      'mobi_app': 'android',
       'network': 'wifi',
       'platform': 'android',
       'player_net': 1,
       'pull': freshIdx == 0 ? 'true' : 'false',
-      'qn': 32,
+      'qn': 120,
       'recsys_mode': 0,
       's_locale': 'zh_CN',
       'splash_id': '',
-      'statistics': Constants.statistics,
+      'statistics': Constants.statisticsApp,
       'voice_balance': 0,
     };
+    AppSign.appSign(params, appkey: _rcmdAppKey, appsec: _rcmdAppSec);
     final res = await Request().get(
-      Api.recommendListApp,
-      queryParameters: params,
+      '${Api.recommendListApp}?${AppSign.makeQuery(params)}',
       options: Options(
         headers: {
           'buvid': LoginHttp.buvid,
           'fp_local':
-              '1111111111111111111111111111111111111111111111111111111111111111',
+              'b62983f45c4d642dcc786fc02748a210202411020151005bed865a8569fdbf9f',
           'fp_remote':
-              '1111111111111111111111111111111111111111111111111111111111111111',
-          'session_id': '11111111',
+              'b62983f45c4d642dcc786fc02748a210202411020151005bed865a8569fdbf9f',
+          'session_id': Utils.generateRandomString(8),
           'env': 'prod',
-          'app-key': 'android_hd',
-          'User-Agent': Constants.userAgent,
+          'app-key': 'android64',
+          'User-Agent': Constants.userAgentApp,
           'x-bili-trace-id': Constants.traceId,
           'x-bili-aurora-eid': '',
           'x-bili-aurora-zone': '',
