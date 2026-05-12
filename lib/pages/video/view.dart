@@ -771,6 +771,8 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
         // 而跳过播放器销毁，导致后台无声播放。
         // 重置后，dispose 中 _shouldStartInAppPip 会重新评估是否创建新小窗。
         _isEnteringPipMode = false;
+        // 标记需要重试 PiP：关了别人的 PiP，恢复播放器后应尝试启动自己的 PiP
+        _pipRetryPending = true;
       }
     }
     // 视频页返回时，若直播小窗仍在运行，也需关闭
@@ -2605,12 +2607,6 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
     }
     if (didPop) {
       _startInAppPipIfNeeded();
-      // 如果 PiP 启动失败（被其他视频/直播抢占），标记待重试。
-      // 注意：_isEnteringPipMode 可能在 didPushNext 中已被设为 true，
-      // 所以不能用 !_isEnteringPipMode 判断，需要用 isInPipMode 检查 startPip 是否真正成功。
-      if (!PipOverlayService.isInPipMode) {
-        _pipRetryPending = true;
-      }
     }
     videoDetailController.plPlayerController.onPopInvokedWithResult(
       didPop,
