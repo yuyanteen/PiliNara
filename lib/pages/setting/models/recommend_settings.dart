@@ -144,6 +144,13 @@ List<SettingsModel> get recommendSettings => [
       setState();
     },
   ),
+  const SwitchModel(
+    title: '显示视频标签',
+    subtitle: '在首页视频卡片底部显示推荐理由、已关注等标签',
+    leading: Icon(Icons.label_outline),
+    setKey: SettingBoxKey.showRcmdTags,
+    defaultVal: true,
+  ),
   SwitchModel(
     title: '已关注UP豁免推荐过滤',
     subtitle: '推荐中已关注用户发布的内容不会被过滤',

@@ -716,6 +716,9 @@ abstract final class Pref {
   static bool get showHotRcmd =>
       _setting.get(SettingBoxKey.showHotRcmd, defaultValue: false);
 
+  static bool get showRcmdTags =>
+      _setting.get(SettingBoxKey.showRcmdTags, defaultValue: true);
+
   static bool get mixWithOthers =>
       _setting.get(SettingBoxKey.mixWithOthers, defaultValue: false);
 

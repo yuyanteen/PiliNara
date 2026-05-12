@@ -102,6 +102,7 @@ abstract final class SettingBoxKey {
       refreshDragPercentage = 'refreshDragPercentage',
       refreshDisplacement = 'refreshDisplacement',
       showHotRcmd = 'showHotRcmd',
+      showRcmdTags = 'showRcmdTags',
       audioNormalization = 'audioNormalization',
       fallbackNormalization = 'fallbackNormalization',
       superResolutionType = 'superResolutionType',
