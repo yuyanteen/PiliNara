@@ -17,6 +17,7 @@ import 'package:PiliPlus/utils/extension/dimension_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
+import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/material.dart' hide LayoutBuilder;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
@@ -184,7 +185,7 @@ class VideoCardV extends StatelessWidget {
             Row(
               spacing: 2,
               children: [
-                if (videoItem.goto == 'bangumi')
+                if (Pref.showRcmdTags && videoItem.goto == 'bangumi')
                   PBadge(
                     text: videoItem.pgcBadge,
                     isStack: false,
@@ -192,14 +193,14 @@ class VideoCardV extends StatelessWidget {
                     type: .line_primary,
                     fontSize: 9,
                   ),
-                if (videoItem.rcmdReason != null)
+                if (Pref.showRcmdTags && videoItem.rcmdReason != null)
                   PBadge(
                     text: videoItem.rcmdReason,
                     isStack: false,
                     size: .small,
                     type: .secondary,
                   ),
-                if (videoItem.goto == 'picture')
+                if (Pref.showRcmdTags && videoItem.goto == 'picture')
                   const PBadge(
                     text: '动态',
                     isStack: false,
@@ -207,7 +208,7 @@ class VideoCardV extends StatelessWidget {
                     type: .line_primary,
                     fontSize: 9,
                   ),
-                if (videoItem.isFollowed)
+                if (Pref.showRcmdTags && videoItem.isFollowed)
                   const PBadge(
                     text: '已关注',
                     isStack: false,
